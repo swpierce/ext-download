@@ -1,0 +1,20 @@
+<?php $enc = $this->encoder(); ?>
+<section class="aimeos account-download">
+<?php if( ( $errors = $this->get( 'downloadErrorList', array() ) ) !== array() ) : ?>
+	<ul class="error-list">
+<?php foreach( $errors as $error ) : ?>
+		<li class="error-item"><?php echo $enc->html( $error ); ?></li>
+<?php endforeach; ?>
+	</ul>
+<?php endif; ?>
+<?php if( !empty( $listItems ) ) : ?>
+	<h2 class="header"><?php echo $this->translate( 'client/html', 'Purchased Downloads' ); ?></h2>
+
+	<ul class="download-items">
+	</ul>
+<?php endif; ?>
+    <h1>Hello, world.</h1>  <?php /* does not get displayed but should? */ ?>
+    
+    throw new MShop_Exception( 'Something is broken' ); <?php /* this does get thrown so we are reaching this point... */ ?>
+<?php echo $this->get( 'downloadBody' ); ?>
+</section>
