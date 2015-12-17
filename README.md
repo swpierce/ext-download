@@ -98,6 +98,8 @@ The actual download configuration is done in ```shop.php``` via something like:
         'drivename' => 'FLYSYSTEM-DISK-NAME',
     ),
 ```
+Finally, you will need to set up the database table. Add the table to your database using
+the file ```lib/custom/setup/default/schema/mysql/download.sql```
 
 ## License
 
