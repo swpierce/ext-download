@@ -1,0 +1,12 @@
+{
+    "projectName": "Aimeos ai-download extension",
+    "deployDir": "deploy",
+    "licenseText": "",
+    "pkgs": [{
+        "name": "Aimeos ai-download",
+        "file": "js/aimeos-ai-download.js",
+        "isDebug": true,
+        "fileIncludes": []
+    }],
+    "resources" : []
+}
