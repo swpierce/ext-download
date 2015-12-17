@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 *.log
 *.junit.xml
 coverage.xml
 coveralls.json
+=======
+
+>>>>>>> 5ff68c9c1178d24a1bee4000bf5723c9750a851f
