@@ -316,15 +316,12 @@ class Client_Html_Account_Download_Default
             $search->setSortations( array( $search->sort( '-', 'download.ctime' ) ) );
             
             $downloadListItems = $dlManager->searchItems( $search );
-            if( !empty( $dlList ) ) {
+            if( !empty( $downloadListItems ) ) {
                 $ordProdManager = MShop_Factory::createManager( $context, 'order/base/product' );
-                foreach( $dlList as $download )
+                foreach( $downloadListItems as $download )
                 {
                     $product = $ordProdManager->getItem( $download->getProductId() );
-                    // to make it easier to display a preview image - might be worth refactoring
-                    // the main Download component to include a preview URL along with the
-                    // download link
-                    $mediaItems[ $download->getProductId().'-dl' ] = array(
+                    $mediaItems[ $download->getId().'-dl' ] = array(
                         'display' => $this->_getDownloadDisplayName( $download ),
                         'image' => $product->getMediaUrl(),
                     );

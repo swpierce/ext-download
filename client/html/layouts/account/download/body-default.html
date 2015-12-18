@@ -1,20 +1,72 @@
-<?php $enc = $this->encoder(); ?>
+<?php
+
+/**
+ * @copyright Copyright (c) 12 Paw Paperie, 2015
+ * @license LGPLv3, http://opensource.org/licenses/LGPL-3.0
+ */
+
+$enc = $this->encoder();
+$listItems = $this->get( 'downloadListItems', array() );
+$mediaItems = $this->get( 'downloadLinkItems', array() );
+$disk = \Illuminate\Support\Facades\Storage::disk( config( 'shop.distros.drivename', 'distros' ) );
+?>
 <section class="aimeos account-download">
 <?php if( ( $errors = $this->get( 'downloadErrorList', array() ) ) !== array() ) : ?>
 	<ul class="error-list">
-<?php foreach( $errors as $error ) : ?>
-		<li class="error-item"><?php echo $enc->html( $error ); ?></li>
-<?php endforeach; ?>
+<?php	foreach( $errors as $error ) : ?>
+			<li class="error-item"><?php echo $enc->html( $error ); ?></li>
+<?php	endforeach; ?>
 	</ul>
 <?php endif; ?>
-<?php if( !empty( $listItems ) ) : ?>
-	<h2 class="header"><?php echo $this->translate( 'client/html', 'Purchased Downloads' ); ?></h2>
 
-	<ul class="download-items">
-	</ul>
+<?php if( !empty( $listItems ) ) : ?>
+	<h2 class="header"><?php echo $this->translate( 'client/html', 'Purchased downloads' ); ?></h2>
+    <div class="container-fluid">
+        <div class="panel panel-default" id="file-accordion">
+            <div class="panel-heading">
+                <a data-toggle="collapse" data-parent="file-accordion" href="#file-list">
+                    <h3 class="panel-title">Files<span class="caret"></span></h3>
+                </a>
+            </div>
+            <div class="panel-body panel-collapse collapse" id="file-list">
+                <div class="row">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Size</th>
+                                <th>Expiration Date</th>
+                                <th>Downloads Remaining</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+<?php foreach( $listItems as $download ): ?>
+                            <tr>
+                                <td>
+                                    <a href="<?php echo url( '/downloadfile/'.$download->getFileId() ); ?>">
+<?php $imgUrl = config( 'shop.client.html.common.content.baseurl' ).$mediaItems[ $download->getId().'-dl']['image']; ?>
+                                        <img src="<?php echo $imgUrl ?>" width="200">
+                                        <?php echo $mediaItems[ $download->getId().'-dl' ][ 'display' ]; ?>
+                                    </a>
+                                </td>
+                                <td><?php echo human_filesize( $disk->size( $download->getUrl() ) ); ?></td>
+                                <td><strong><?php echo calcExpirationDate( $download->getTimeCreated() ); ?></strong></td>
+                                <td>
+                                    You have downloaded this file <?php echo $download->getDownloads(); ?> of
+                                    <?php echo config( 'shop.distros.max-downloads', 3 ); ?> times.</td>
+                            </tr>
+<?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <p>
+                        Downloads are available for <?php echo config( 'shop.distros.max-days' ); ?> days from the date of purchase. You are
+                        able to download your purchased file <?php echo config( 'shop.distros.max-downloads' ); ?> times within that
+                        <?php echo config( 'shop.distros.max-days' ); ?> days.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 <?php endif; ?>
-    <h1>Hello, world.</h1>  <?php /* does not get displayed but should? */ ?>
-    
-    throw new MShop_Exception( 'Something is broken' ); <?php /* this does get thrown so we are reaching this point... */ ?>
 <?php echo $this->get( 'downloadBody' ); ?>
 </section>
